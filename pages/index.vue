@@ -1,5 +1,5 @@
 <template>
-  <v-layout />
+<h1>gaplpl</h1>
 </template>
 
 <script>
