@@ -17,12 +17,14 @@
       </v-list>
     </v-navigation-drawer>
     
-    <v-app-bar app height="88" >
+    <v-app-bar app height="88" dark>
       <v-icon left @click="drawer=!drawer" class="hidden-md-and-up" > mdi-menu </v-icon> 
-        <img  src="/meetup1.png"  style="height: 80px;" >
-
       
+      <nuxt-link to="/"> 
+        <img  src="/meetup1.png"    style="height: 80px;cursor:pointer" >
+      </nuxt-link>
       <h2>&nbsp;Meetup's</h2>
+      
       <v-spacer></v-spacer>
       <template  v-for="(item,i) in menuItems">
        <v-btn  
@@ -37,9 +39,16 @@
       </template>     
     </v-app-bar>
    
-    <v-content>
-      <nuxt />
+    <v-content style="background-color: #981914;">
+      <div class="gn-content">
+        <nuxt /> 
+      </div>
     </v-content>
+
+    <v-footer dark>
+      <span>&copy; 2019 Web Dev</span>
+    </v-footer>
+
   </v-app>
 </template>
 
@@ -59,3 +68,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .gn-content{
+    background-color: snow;
+    /* min-width: 400px; */
+    height: 100%;
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+</style>
