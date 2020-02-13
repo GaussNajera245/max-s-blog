@@ -40,7 +40,7 @@
     </v-app-bar>
    
     <v-content style="background-color: #981914;">
-      <div class="gn-content">
+      <div class="gn-content" >
         <nuxt /> 
       </div>
     </v-content>
@@ -72,9 +72,13 @@ export default {
 <style scoped>
   .gn-content{
     background-color: snow;
-    /* min-width: 400px; */
+    min-width: 400px;
     /* height: 100%; */
     margin-left: 100px;
     margin-right: 100px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+
   }
 </style>

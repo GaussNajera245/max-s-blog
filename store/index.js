@@ -1,4 +1,6 @@
 
+const strict = false;
+
 const state = () => {
     return {
         loadedMeetup:[
@@ -21,9 +23,24 @@ const state = () => {
     }
 }
 
-const mutations = {}
+const mutations = {
+    createMeetup(state, payload){
+        state.loadedMeetup.push(payload)
+    }
+}
+const actions={
+    createMeetup({commit}, payload){
+        let otis = {
+            title: payload.title,
+            description: payload.description,
+            id: payload.id,
+            date: payload.date,
+            imageUrl: payload.imageUrl
+        }
+        commit('createMeetup', otis)
+    }
+}
 
-const actions={}
 
 const getters = {
     loadedMeetups(state){  
@@ -54,6 +71,7 @@ export {
     state,
     actions,
     getters,
-    mutations
+    mutations,
+    strict
 }
 
