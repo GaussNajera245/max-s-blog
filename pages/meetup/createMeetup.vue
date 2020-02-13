@@ -77,7 +77,8 @@
         "Squirrel",
         "Sky",
         "Bird",
-        "Planet"
+        "Planet",
+        "Random"
       ]
     }),
 
@@ -85,14 +86,19 @@
        reset () {
         this.$refs.form.reset()
       },
-
-      createMyPost(){
+      updateUrlProp(){
         let i = this.$store.state.loadedMeetup;
         i.forEach((e)=>{
           if( e.title == this.select ){
             this.url = e.imageUrl;
           }
+          else{
+            this.url= "https://picsum.photos/200/300?random=1"
+          }
         })
+      },
+      createMyPost(){
+        this.updateUrlProp()
 
         const pass = {
           title: this.title,
