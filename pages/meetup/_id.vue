@@ -12,9 +12,8 @@
                 >
                 </v-img>
                 <v-card-text>
-                    <div class="info--text" > {{meet.date}}- Where ittakes place: {{meet.title}} </div>
-                    <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium debitis modi libero! Esse eius temporibus impedit maiores optio rerum similique voluptas consequatur delectus id, quos blanditiis quia itaque ex nam.
-                    </div>
+                    <div class="info--text" > {{meet.date}}- Where it takes place: {{meet.title}} </div>
+                    <div>{{meet.description}}</div>
                 </v-card-text>
 
                 <v-card-actions>

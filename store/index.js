@@ -1,4 +1,6 @@
 
+import {firebase} from '~/plugins/firebase.js'
+
 const strict = false;
 
 const state = () => {
@@ -30,14 +32,20 @@ const mutations = {
 }
 const actions={
     createMeetup({commit}, payload){
-        let otis = {
+        const otis = {
             title: payload.title,
             description: payload.description,
-            id: payload.id,
-            date: payload.date,
+            date: payload.date.toISOString(),
             imageUrl: payload.imageUrl
         }
-        commit('createMeetup', otis)
+
+        firebase.database().ref('madeinpost').push(otis)
+            .then((data) => {
+                commit('createMeetup', { ...otis, id: data.key})
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 }
 
