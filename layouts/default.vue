@@ -61,8 +61,8 @@ export default {
     return {
       drawer: false,
       menuItems:[
-        {icon: 'supervisor_account', title: 'View Meetups', url: "/meetup/viewMeet" },
-        {icon: 'room', title: 'Organize Meetups', url: "/meetup/createMeetup"},
+        {icon: 'supervisor_account', title: 'View All Posts', url: "/meetup/viewMeet" },
+        {icon: 'room', title: 'Create Post', url: "/meetup/createMeetup"},
         {icon: 'person', title: 'Profile', url: "/user/profile"},
         {icon: 'face', title: 'Sign Up', url: "/user/signup"},
         {icon: 'lock_open', title: 'Sign In', url: "/user/signign"},

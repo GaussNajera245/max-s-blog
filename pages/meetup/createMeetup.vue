@@ -89,10 +89,11 @@
       updateUrlProp(){
         let i = this.$store.state.loadedMeetup;
         i.forEach((e)=>{
-          if( e.title == this.select ){
+          if(this.select === e.title){
             this.url = e.imageUrl;
+            console.log({store: e.title, selec:this.select })
           }
-          else{
+          else if (this.select === "Random") {
             this.url= "https://picsum.photos/200/300?random=1"
           }
         })
