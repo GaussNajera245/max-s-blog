@@ -39,9 +39,9 @@ const actions={
             imageUrl: payload.imageUrl
         }
 
-        firebase.database().ref('madeinpost').push(otis)
+        firebase.firestore().collection('posters').add(otis)
             .then((data) => {
-                commit('createMeetup', { ...otis, id: data.key})
+                commit('createMeetup', { ...otis, id: data.id})
             })
             .catch((err) => {
                 console.log(err);
