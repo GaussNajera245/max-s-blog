@@ -88,7 +88,7 @@ export default {
 <style scoped>
   .gn-content{
     background-color: snow;
-    min-width: 400px;
+    /* min-width: 400px; */
     /* height: 100%; */
     margin-left: 100px;
     margin-right: 100px;
