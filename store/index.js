@@ -2,6 +2,7 @@
 import {firebase} from '~/plugins/firebase.js'
 
 const strict = false;
+const db = firebase.firestore();
 
 const state = () => {
     return {
@@ -28,6 +29,9 @@ const state = () => {
 const mutations = {
     createMeetup(state, payload){
         state.loadedMeetup.push(payload)
+    },
+    fetchAllpost(state, payload){
+        state.loadedMeetup = payload
     }
 }
 const actions={
@@ -38,14 +42,28 @@ const actions={
             date: payload.date.toISOString(),
             imageUrl: payload.imageUrl
         }
-
-        firebase.firestore().collection('posters').add(otis)
+        db.collection('posters').add(otis)
             .then((data) => {
                 commit('createMeetup', { ...otis, id: data.id})
             })
             .catch((err) => {
                 console.log(err);
             })
+    },
+    fetchAllpost({commit}){
+        let cold = [];
+        db.collection('posters').get()
+        .then(snapshot => {
+            snapshot.forEach(doc => {
+                let h = doc.data();
+                cold.push({...h, id: doc.id})
+            });
+            commit('fetchAllpost', cold);
+            
+        })
+          .catch(err => {
+            console.log('Error getting documents', err);
+          });
     }
 }
 

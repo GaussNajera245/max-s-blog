@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import Vuex from 'vuex';
-
 export default {
   computed:{
       items(){
@@ -25,6 +23,7 @@ export default {
   },
   methods: {
     onloadmeet(id) {
+
       this.$router.push("/meetup/" + id);
     }
   }

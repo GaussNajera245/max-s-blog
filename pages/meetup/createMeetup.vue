@@ -63,7 +63,9 @@
 
 
 <script>
-  export default {
+import {firebase} from '~/plugins/firebase.js'
+
+export default {
     data: () => ({
       valid: true,
       title: '',
@@ -91,10 +93,10 @@
         i.forEach((e)=>{
           if(this.select === e.title){
             this.url = e.imageUrl;
-            console.log({store: e.title, selec:this.select })
           }
           else if (this.select === "Random") {
-            this.url= "https://picsum.photos/200/300?random=1"
+            let h = Math.floor(Math.random()*1000);
+            this.url= `https://i.picsum.photos/id/${h}/1095/400.jpg`
           }
         })
       },

@@ -40,7 +40,13 @@
 export default {
   computed:{
     meetupsCards (){
+      this.$store.dispatch('fetchAllpost')
+
+
+
+
       return this.$store.state.loadedMeetup
+      // return this.$store.getters.fetchAllpost
     }
   }
 }
