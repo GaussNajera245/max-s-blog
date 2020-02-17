@@ -11,7 +11,7 @@
         <v-card>
           <v-card-text>
             <v-container>
-              <form>
+              <form @submit.prevent="onsignUp">
                 <v-layout row>
                   <v-flex xs12 >
                     <v-text-field
@@ -20,6 +20,7 @@
                       v-model="email"
                       id="email"
                       label="Mail"
+                      :rules="emailRules"
                       required
                     >
                     
@@ -32,6 +33,7 @@
                       v-model="password"
                       id="password"
                       label="Password"
+                      :rules="passwordRules"
                       required
                     >
 
@@ -44,10 +46,23 @@
                       id="confirmPassword"
                       label="Confirm Password"
                       required
+                      :rules="confirmPassRule"
                     >
 
                     </v-text-field>
                   </v-flex>
+                  <v-flex xs4>   
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="warning"
+                        :disabled="!isValid"
+                        type="submit"
+                      >  Sign Up
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                  </v-flex>
+
+
                 </v-layout>
               </form>
             </v-container>
@@ -57,3 +72,57 @@
     </v-layout>
   </v-container>
 </template>
+
+
+<script>
+export default {
+  data(){
+    return {
+    email:'',
+    confirmPassword:'',
+    password:'',
+    confirmPassRule:[
+      v => ( this.comparePass ) ? true: 'Passwords do not match',
+      v => !!v || '',
+    ],
+    passwordRules:[
+      v => !!v || 'Password is required',
+    ],
+    emailRules:[
+      v => !!v || 'E-Mail is required',
+      v => /.+@.+\..+/.test(v) || 'E-mail is invalid'
+    ],
+    
+  }},
+  methods:{
+    onsignUp(){
+      console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword});
+      this.$store.dispatch('newUser', {
+        email: this.email, 
+        password: this.password
+        }
+      );
+    }
+  },
+  computed:{
+    isValid(){
+      return this.email !== '' && this.confirmPassword !== '' && this.password !=='' && this.comparePass
+    },
+    comparePass(){
+      return ( this.password == this.confirmPassword ) 
+    },
+  //   user(){
+  //     return this.$store.getters.currentUser
+  //   }
+  // },
+  // watch:{
+  //   user(value){
+  //     if(value !== null && value !== undefined){
+  //       this.$router.push('/')
+  //     }
+      
+  //   }
+  }
+  
+}
+</script>

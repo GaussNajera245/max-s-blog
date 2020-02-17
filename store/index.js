@@ -21,7 +21,7 @@ const state = () => {
             }
         ],
         users:{
-            id:"nemo", registeredMeetups:["squirrelid"]
+            id:null, registeredMeetups:null
         }
     }
 }
@@ -32,7 +32,14 @@ const mutations = {
     },
     fetchAllpost(state, payload){
         state.loadedMeetup = payload
+    },
+    currentUser(payload){
+        state.users = {
+            id: payload.id,
+            registeredMeetups: payload.posts
+        }
     }
+
 }
 const actions={
     createMeetup({commit}, payload){
@@ -42,6 +49,7 @@ const actions={
             date: payload.date.toISOString(),
             imageUrl: payload.imageUrl
         }
+
         db.collection('posters').add(otis)
             .then((data) => {
                 commit('createMeetup', { ...otis, id: data.id})
@@ -50,19 +58,29 @@ const actions={
                 console.log(err);
             })
     },
+
     fetchAllpost({commit}){
         let cold = [];
         db.collection('posters').get()
-        .then(snapshot => {
-            snapshot.forEach(doc => {
-                let h = doc.data();
-                cold.push({...h, id: doc.id})
+        .then(s => {
+            s.forEach(d => {
+                let h = d.data();
+                cold.push({...h, id: d.id})
             });
             commit('fetchAllpost', cold);
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+    },
+
+    newUser({commit}, payload){
+        firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password).then(()=>{
+            console.log("success");
             
         })
-          .catch(err => {
-            console.log('Error getting documents', err);
+        .catch(function(error) {
+            console.log({ errorCode:error.code, errorMessage: error.message });
           });
     }
 }
@@ -91,6 +109,10 @@ const getters = {
         let kima = getters;
         return kima.loadedMeetups.slice(0,5)
     },
+    getUser(state){
+        return state.users
+    }
+
 }
 
 export {
