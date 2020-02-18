@@ -96,7 +96,6 @@ export default {
   }},
   methods:{
     onsignUp(){
-      console.log({email: this.email, password: this.password, confirmPassword: this.confirmPassword});
       this.$store.dispatch('newUser', {
         email: this.email, 
         password: this.password
@@ -104,6 +103,7 @@ export default {
       );
     }
   },
+
   computed:{
     isValid(){
       return this.email !== '' && this.confirmPassword !== '' && this.password !=='' && this.comparePass
@@ -111,18 +111,6 @@ export default {
     comparePass(){
       return ( this.password == this.confirmPassword ) 
     },
-  //   user(){
-  //     return this.$store.getters.currentUser
-  //   }
-  // },
-  // watch:{
-  //   user(value){
-  //     if(value !== null && value !== undefined){
-  //       this.$router.push('/')
-  //     }
-      
-  //   }
   }
-  
 }
 </script>

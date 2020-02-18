@@ -21,7 +21,7 @@ const state = () => {
             }
         ],
         users:{
-            id:null, registeredMeetups:null
+            id:"HOLA", registeredMeetups:null
         }
     }
 }
@@ -33,14 +33,12 @@ const mutations = {
     fetchAllpost(state, payload){
         state.loadedMeetup = payload
     },
-    currentUser(payload){
-        state.users = {
-            id: payload.id,
-            registeredMeetups: payload.posts
-        }
+    currentUser(state, payload){
+        state.users.id = payload.id
+        state.users.registeredMeetups = payload.registeredMeetups
     }
-
 }
+
 const actions={
     createMeetup({commit}, payload){
         const otis = {
@@ -75,10 +73,15 @@ const actions={
     },
 
     newUser({commit}, payload){
-        firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password).then(()=>{
-            console.log("success");
-            
-        })
+        firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(
+            cred => {
+                let fish = {
+                    id: cred.user.uid,
+                    registeredMeetups: []
+                }
+                commit('currentUser', fish)
+            })
         .catch(function(error) {
             console.log({ errorCode:error.code, errorMessage: error.message });
           });
@@ -112,7 +115,6 @@ const getters = {
     getUser(state){
         return state.users
     }
-
 }
 
 export {
