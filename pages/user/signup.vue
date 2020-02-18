@@ -92,17 +92,7 @@ export default {
       v => !!v || 'E-Mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail is invalid'
     ],
-    
   }},
-  methods:{
-    onsignUp(){
-      this.$store.dispatch('newUser', {
-        email: this.email, 
-        password: this.password
-        }
-      );
-    }
-  },
 
   computed:{
     isValid(){
@@ -111,6 +101,27 @@ export default {
     comparePass(){
       return ( this.password == this.confirmPassword ) 
     },
+    user(){
+      return this.$store.state.users.id
+    }
+  },
+  
+  watch:{
+    user: (val) =>{
+      if( val !== undefined && val !== null) {
+        window.$nuxt.$router.push('/')  //https://github.com/nuxt/nuxt.js/issues/2637
+      }
+    }
+  },
+
+  methods:{
+    onsignUp(){
+      this.$store.dispatch('newUser', {
+        email: this.email, 
+        password: this.password
+        }
+      );
+    }
   }
 }
 </script>

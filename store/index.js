@@ -21,7 +21,7 @@ const state = () => {
             }
         ],
         users:{
-            id:"HOLA", registeredMeetups:null
+            id:null, registeredMeetups:null
         }
     }
 }
