@@ -73,5 +73,6 @@ export default {
       return this.$store.state.loadedMeetup
     }
   },
+  middleware: 'isAuth'
 }
 </script>

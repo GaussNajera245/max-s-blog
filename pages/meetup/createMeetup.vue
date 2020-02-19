@@ -119,9 +119,18 @@ export default {
          return this.title !== '' &&  this.description !== '' && this.select !==''
       },
       user(){
-        return this.$store.getters.getUser;
+      return this.$store.state.users.id
+    }
+  },
+  
+  watch:{
+    user: (val) =>{
+      if( val !== undefined && val !== null) {
+        window.$nuxt.$router.push('/')  //https://github.com/nuxt/nuxt.js/issues/2637
       }
-     }
+    }
+  },
+  middleware: 'isAuth'
   }
 </script>
 

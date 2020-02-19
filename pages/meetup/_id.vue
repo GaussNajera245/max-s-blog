@@ -33,6 +33,7 @@ export default {
         meet () {
             return this.$store.getters.loadedMeet(this.$route.params.id)
         }
-    }
+    },
+    middleware: 'isAuth'
 }
 </script>

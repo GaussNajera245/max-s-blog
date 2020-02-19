@@ -23,9 +23,9 @@ export default {
   },
   methods: {
     onloadmeet(id) {
-
       this.$router.push("/meetup/" + id);
     }
-  }
+  },
+  middleware: 'isAuth'
 };
 </script>
