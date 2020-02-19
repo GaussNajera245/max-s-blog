@@ -14,6 +14,12 @@
           <v-icon left >{{item.icon}}</v-icon>
           <v-list-item-content>{{item.title}}</v-list-item-content>
         </v-list-item>
+
+        <v-list-item v-if="true" @click="logOut" >
+            <v-icon left >home</v-icon>
+            <v-list-item-content>Log Out</v-list-item-content>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
     
@@ -36,7 +42,16 @@
         <v-icon left>{{item.icon}}</v-icon> 
         {{item.title}}
       </v-btn>
-      </template>     
+      </template> 
+
+      <v-btn  
+          text   
+          class="hidden-xs-only  hidden-sm-only " 
+          @click="logOut"
+          > 
+        <v-icon left>home</v-icon> 
+        Log Out
+      </v-btn>    
     </v-app-bar>
    
     <v-content style="background-color: #981914;">
@@ -74,7 +89,7 @@ export default {
       else{
         menuItems = [
         {icon: 'face', title: 'Sign Up', url: "/user/signup"},
-        {icon: 'lock_open', title: 'Sign In', url: "/user/signign"},
+        {icon: 'lock_open', title: 'Sign In', url: "/user/signin"},
       ]
       }
       return menuItems
@@ -84,6 +99,12 @@ export default {
       let auth = this.$store.getters.getUser.id
       let condition = (auth !== undefined && auth !== null)
       return condition
+    }
+  },
+
+  methods:{
+    logOut(){
+      this.$store.dispatch('logOut');
     }
   }
 }

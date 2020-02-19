@@ -11,6 +11,12 @@
         transition="fade-transition"
       ></v-carousel-item>
     </v-carousel>
+    <v-layout>
+      <v-spacer></v-spacer>
+        <h2 style="font-style: oblique;font-size:2em">Welcome back {{name}} !!!!</h2>
+      <v-spacer></v-spacer>
+    
+    </v-layout>
   </v-app>
 </template>
 
@@ -19,6 +25,9 @@ export default {
   computed:{
       items(){
           return this.$store.getters.featuredMeetups
+      },
+      name(){
+        return this.$store.state.users.name
       }
   },
   methods: {

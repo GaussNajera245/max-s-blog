@@ -12,14 +12,14 @@
               <v-card-title primary-title>
                 <div>
                   <h5 class="white--text mb-0">{{m.title}}</h5>
-                  <div style="color:#fffafa">{{m.date}}</div>
-                  <h6 class="white--text mb-0">Posted by: {{m.name}}</h6>
+                  <div style="color:#fffafa">{{m.description | slice}}...</div>
+                  <h6 class="white--text mb-0">Posted by: {{m.auth}}</h6>
                 </div>
               </v-card-title>
 
               <v-card-actions>
                 <v-btn text :to="'/meetup/' + m.id" >
-                  <v-icon left>arrow_forward</v-icon>ViewMeetup
+                  <v-icon left>arrow_forward</v-icon>Read full post:
                 </v-btn>
               </v-card-actions>
               </v-img>
@@ -32,14 +32,14 @@
               <v-card-title primary-title>
                 <div>
                   <h5 class="white--text mb-0">{{m.title}}</h5>
-                  <div style="color:#fffafa">{{m.date}}</div>
-                  <h6 class="white--text mb-0">Posted by: {{m.name}}</h6>
+                  <div style="color:#fffafa">{{m.description | slice}}...</div>
+                  <h6 class="white--text mb-0">Posted by: {{m.auth}}</h6>
                 </div>
               </v-card-title>
 
               <v-card-actions>
                 <v-btn text :to="'/meetup/' + m.id" >
-                  <v-icon left>arrow_forward</v-icon>ViewMeetup
+                  <v-icon left>arrow_forward</v-icon>Read full post:
                 </v-btn>
               </v-card-actions>
               </v-img>
@@ -70,7 +70,13 @@ export default {
         this.once = 1;
         this.$store.dispatch('fetchAllpost');
       }
+      console.log(this.$store.state.loadedMeetup)
       return this.$store.state.loadedMeetup
+    }
+  },
+  filters: {
+    slice: function (value) {
+      return value.slice(0,20)
     }
   },
   middleware: 'isAuth'

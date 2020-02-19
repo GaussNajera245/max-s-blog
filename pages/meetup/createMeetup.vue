@@ -119,7 +119,7 @@ export default {
          return this.title !== '' &&  this.description !== '' && this.select !==''
       },
       user(){
-      return this.$store.state.users.id
+      return this.$store.state.users
     }
   },
   

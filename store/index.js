@@ -84,10 +84,13 @@ const actions={
                     registeredMeetups: [],
                     name: payload.name
                 }
-                
-                db.collection('users').add({name:payload.name ,posterId:cred.user.uid})
+
+                db.collection('users').doc(cred.user.uid).set({
+                    name: payload.name,
+                    mail: payload.email
+                })
                 .catch((err) => {
-                    console.log(err);
+                    console.log({newUserAtStore:err});
                 })
                 
                 commit('currentUser', fish)
@@ -96,6 +99,56 @@ const actions={
         .catch(function(error) {
             console.log({ errorCode:error.code, errorMessage: error.message });
           });
+    },
+
+    logIn({commit}, payload){
+        firebase.auth().signInWithEmailAndPassword( payload.mail, payload.password )
+        .then(
+            credlogin => {
+                
+                db.collection('users').doc(credlogin.user.uid).get()
+
+                  .then( sst => {
+                    let ship = {
+                        id: credlogin.user.uid,
+                        registeredMeetups: [],
+                        name: sst.data().name
+                    }
+                    commit('currentUser', ship)
+                  })
+                  .catch(err => {
+                    console.log('Error getting documents', err);
+                  });
+        })
+        .catch()
+    },
+
+    logOut({commit}){
+        firebase.auth().signOut()
+        .then(
+            ()=>{
+                commit('currentUser', {
+                    id: null,
+                    registeredMeetups: null,
+                    name: null
+                })
+
+                this.$router.push('/user/signin')
+
+                // let auth2 = gapi.auth2.getAuthInstance();
+                // auth2.signOut().then(function () {
+                // console.log('User signed out.');
+                // });
+
+                // console.log("logge ou ??")
+
+                //// aprender mas de esto:VVVVV
+            })
+        .catch(function(error) {
+            console.log({name: "login", err: error});
+            
+        });
+          
     }
 }
 
