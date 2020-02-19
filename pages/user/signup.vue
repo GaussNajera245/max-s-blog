@@ -15,6 +15,16 @@
                 <v-layout row>
                   <v-flex xs12 >
                     <v-text-field
+                      type="text"
+                      name="nickname"
+                      v-model="nickname"
+                      id="nickname"
+                      label="Name"
+                      :rules="nickRules"
+                      required
+                    ></v-text-field>
+
+                    <v-text-field
                       type="email"
                       name="email"
                       v-model="email"
@@ -22,9 +32,7 @@
                       label="Mail"
                       :rules="emailRules"
                       required
-                    >
-                    
-                    </v-text-field>
+                    ></v-text-field>
 
 
                     <v-text-field
@@ -81,6 +89,7 @@ export default {
     email:'',
     confirmPassword:'',
     password:'',
+    nickname:'',
     confirmPassRule:[
       v => ( this.comparePass ) ? true: 'Passwords do not match',
       v => !!v || '',
@@ -92,11 +101,15 @@ export default {
       v => !!v || 'E-Mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail is invalid'
     ],
+    nickRules:[
+      v => !!v || 'A name is required',
+      v => (v.length > 2) || 'Name must be longer than 3 characters',
+    ],
   }},
 
   computed:{
     isValid(){
-      return this.email !== '' && this.confirmPassword !== '' && this.password !=='' && this.comparePass
+      return this.email !== '' && this.confirmPassword !== '' && this.password !=='' && this.comparePass && this.nickname !==''  
     },
     comparePass(){
       return ( this.password == this.confirmPassword ) 
@@ -118,7 +131,8 @@ export default {
     onsignUp(){
       this.$store.dispatch('newUser', {
         email: this.email, 
-        password: this.password
+        password: this.password,
+        name: this.nickname
         }
       );
     }

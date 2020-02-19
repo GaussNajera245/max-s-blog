@@ -57,13 +57,33 @@ export default {
   data () {
     return {
       drawer: false,
-      menuItems:[
-        {icon: 'supervisor_account', title: 'View All Posts', url: "/meetup/viewMeet" },
-        {icon: 'room', title: 'Create Post', url: "/meetup/createMeetup"},
-        {icon: 'person', title: 'Profile', url: "/user/profile"},
+    }
+  },
+
+  computed:{
+    menuItems(){
+      let menuItems = [];
+
+      if(this.isUserAuth){
+        menuItems = [
+          {icon: 'supervisor_account', title: 'View All Posts', url: "/meetup/viewMeet" },
+          {icon: 'room', title: 'Create Post', url: "/meetup/createMeetup"},
+          {icon: 'person', title: 'Profile', url: "/user/profile"}
+        ]
+      }
+      else{
+        menuItems = [
         {icon: 'face', title: 'Sign Up', url: "/user/signup"},
         {icon: 'lock_open', title: 'Sign In', url: "/user/signign"},
       ]
+      }
+      return menuItems
+    },
+    
+    isUserAuth(){
+      let auth = this.$store.getters.getUser.id
+      let condition = (auth !== undefined && auth !== null)
+      return condition
     }
   }
 }

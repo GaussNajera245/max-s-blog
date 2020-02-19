@@ -3,18 +3,17 @@
   <v-layout row wrap>
     <v-flex xs12>
       <v-card class="info">
-        <v-container fluid>
-
-          <v-layout row  v-for=" m in meetupsCards "  :key="m.id" class="mb-4" dark >
-            <v-flex xs5 sm4 md3>
-              <v-img :src="m.imageUrl"></v-img>
-            </v-flex>
-
-            <v-flex xs7 xm8 md9>
+        <v-container fluid grid-list-md>
+          <v-layout row wrap  class="mb-4"  dark>
+           
+           <template  v-for = "(m,i) in meetupsCards"   >
+            <v-flex xs12 sm12 md6 lg6  :key="m.id" v-if= "i % 2 == 0" >
+              <v-img :src="m.imageUrl">
               <v-card-title primary-title>
                 <div>
                   <h5 class="white--text mb-0">{{m.title}}</h5>
-                  <div>{{m.date}}</div>
+                  <div style="color:#fffafa">{{m.date}}</div>
+                  <h6 class="white--text mb-0">Posted by: {{m.name}}</h6>
                 </div>
               </v-card-title>
 
@@ -23,11 +22,31 @@
                   <v-icon left>arrow_forward</v-icon>ViewMeetup
                 </v-btn>
               </v-card-actions>
+              </v-img>
             </v-flex>
-              <br>
+           </template>
+
+           <template  v-for = "(m,i) in meetupsCards"   >
+            <v-flex xs12 sm12 md6 lg6 :key="m.id"  v-if= "i % 2 !== 0"> 
+              <v-img :src="m.imageUrl">
+              <v-card-title primary-title>
+                <div>
+                  <h5 class="white--text mb-0">{{m.title}}</h5>
+                  <div style="color:#fffafa">{{m.date}}</div>
+                  <h6 class="white--text mb-0">Posted by: {{m.name}}</h6>
+                </div>
+              </v-card-title>
+
+              <v-card-actions>
+                <v-btn text :to="'/meetup/' + m.id" >
+                  <v-icon left>arrow_forward</v-icon>ViewMeetup
+                </v-btn>
+              </v-card-actions>
+              </v-img>
+            </v-flex>
+           </template>
+
           </v-layout>
-
-
         </v-container>
       </v-card>
     </v-flex>
@@ -37,17 +56,22 @@
 
 
 <script>
+
+
 export default {
+  data(){
+    return{
+      once:0
+    }
+  },
   computed:{
     meetupsCards (){
-      this.$store.dispatch('fetchAllpost')
-
-
-
-
+      if(this.once === 0){
+        this.once = 1;
+        this.$store.dispatch('fetchAllpost');
+      }
       return this.$store.state.loadedMeetup
-      // return this.$store.getters.fetchAllpost
     }
-  }
+  },
 }
 </script>

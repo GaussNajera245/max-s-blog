@@ -21,7 +21,7 @@ const state = () => {
             }
         ],
         users:{
-            id:null, registeredMeetups:null
+            id:null, registeredMeetups:null, name: null
         }
     }
 }
@@ -34,8 +34,9 @@ const mutations = {
         state.loadedMeetup = payload
     },
     currentUser(state, payload){
-        state.users.id = payload.id
-        state.users.registeredMeetups = payload.registeredMeetups
+        state.users.id = payload.id; 
+        state.users.registeredMeetups = payload.registeredMeetups;
+        state.users.name = payload.name;
     }
 }
 
@@ -45,7 +46,8 @@ const actions={
             title: payload.title,
             description: payload.description,
             date: payload.date.toISOString(),
-            imageUrl: payload.imageUrl
+            imageUrl: payload.imageUrl,
+            auth: payload.auth
         }
 
         db.collection('posters').add(otis)
@@ -76,11 +78,20 @@ const actions={
         firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
             cred => {
+                console.log(cred);
                 let fish = {
                     id: cred.user.uid,
-                    registeredMeetups: []
+                    registeredMeetups: [],
+                    name: payload.name
                 }
+                
+                db.collection('users').add({name:payload.name ,posterId:cred.user.uid})
+                .catch((err) => {
+                    console.log(err);
+                })
+                
                 commit('currentUser', fish)
+
             })
         .catch(function(error) {
             console.log({ errorCode:error.code, errorMessage: error.message });

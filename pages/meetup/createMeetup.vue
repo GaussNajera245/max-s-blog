@@ -89,16 +89,14 @@ export default {
         this.$refs.form.reset()
       },
       updateUrlProp(){
-        let i = this.$store.state.loadedMeetup;
-        i.forEach((e)=>{
-          if(this.select === e.title){
-            this.url = e.imageUrl;
+          if(this.select !== "Random"){
+            let hi = this.select.toLowerCase();
+            this.url = `https://cdn.vuetifyjs.com/images/carousel/${hi}.jpg`;
           }
           else if (this.select === "Random") {
             let h = Math.floor(Math.random()*1000);
             this.url= `https://i.picsum.photos/id/${h}/1095/400.jpg`
           }
-        })
       },
       createMyPost(){
         this.updateUrlProp()
@@ -108,7 +106,8 @@ export default {
           description: this.description,
           id:"dummie Id",
           date: new Date(),
-          imageUrl: this.url
+          imageUrl: this.url,
+          auth: this.user.name
         }
 
         this.$store.dispatch('createMeetup', pass) 
@@ -119,6 +118,9 @@ export default {
       isValid(){
          return this.title !== '' &&  this.description !== '' && this.select !==''
       },
+      user(){
+        return this.$store.getters.getUser;
+      }
      }
   }
 </script>
