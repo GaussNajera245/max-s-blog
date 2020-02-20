@@ -8,21 +8,22 @@ const state = () => {
     return {
         loadedMeetup:[
             {
-                imageUrl:"https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg", id:"squirrelid", title:"Squirrel", date:"2017-07-11"
+                imageUrl:"https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg", id:"squirrelid", title:"Squirrel", date:"2017-07-11", description:"nonenonenonenonenone"
             },
             {
-                imageUrl: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg", id:"skyid", title:"Sky", date:"2017-02-26"
+                imageUrl: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg", id:"skyid", title:"Sky", date:"2017-02-26", description:"nonenonenonenonenone"
             },
             {
-                imageUrl: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg", id:"birdid", title:"Bird", date:"2017-08-20"
+                imageUrl: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg", id:"birdid", title:"Bird", date:"2017-08-20", description:"nonenonenonenonenone"
             },
             {
-                imageUrl: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg", id:"planetid", title:"Planet", date:"2017-05-12"
+                imageUrl: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg", id:"planetid", title:"Planet", date:"2017-05-12", description:"nonenonenonenonenone"
             }
         ],
         users:{
             id:null, registeredMeetups:null, name: null
-        }
+        },
+        mail: ''
     }
 }
 
@@ -37,11 +38,18 @@ const mutations = {
         state.users.id = payload.id; 
         state.users.registeredMeetups = payload.registeredMeetups;
         state.users.name = payload.name;
+    },
+    addMeet(state, payload){
+        state.users.registeredMeetups.push(payload)
+    },
+    changeMail(state, payload){
+        state.mail = payload
     }
+
 }
 
 const actions={
-    createMeetup({commit}, payload){
+    createMeetup({commit,state}, payload){
         const otis = {
             title: payload.title,
             description: payload.description,
@@ -52,11 +60,21 @@ const actions={
 
         db.collection('posters').add(otis)
             .then((data) => {
+
+                commit('addMeet', data.id)
+                
                 commit('createMeetup', { ...otis, id: data.id})
             })
             .catch((err) => {
-                console.log(err);
+                console.log({createMe:err});
             })
+
+         db.collection('users').doc(state.users.id).set(
+             {
+                name: state.users.name,
+                mail: state.mail,
+                resgisteredPost: state.users.registeredMeetups
+            })    
     },
 
     fetchAllpost({commit}){
@@ -78,22 +96,24 @@ const actions={
         firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
             cred => {
-                console.log(cred);
+                // console.log(cred);
                 let fish = {
                     id: cred.user.uid,
                     registeredMeetups: [],
                     name: payload.name
                 }
-
+                
                 db.collection('users').doc(cred.user.uid).set({
                     name: payload.name,
-                    mail: payload.email
+                    mail: payload.email,
+                    registeredPost: []
                 })
                 .catch((err) => {
                     console.log({newUserAtStore:err});
                 })
                 
-                commit('currentUser', fish)
+                commit('changeMail', payload.email);
+                commit('currentUser', fish);
 
             })
         .catch(function(error) {
@@ -111,14 +131,17 @@ const actions={
                   .then( sst => {
                     let ship = {
                         id: credlogin.user.uid,
-                        registeredMeetups: [],
+                        registeredMeetups: sst.data().registeredPost,
                         name: sst.data().name
                     }
+                    console.log(ship)
                     commit('currentUser', ship)
                   })
                   .catch(err => {
                     console.log('Error getting documents', err);
                   });
+
+                commit('changeMail', payload.mail);
         })
         .catch()
     },
@@ -132,9 +155,10 @@ const actions={
                     registeredMeetups: null,
                     name: null
                 })
-
+                // .catch((err) => {
+                //     console.log({newUserAtStore:err});
+                // })
                 this.$router.push('/user/signin')
-
                 // let auth2 = gapi.auth2.getAuthInstance();
                 // auth2.signOut().then(function () {
                 // console.log('User signed out.');
@@ -145,11 +169,11 @@ const actions={
                 //// aprender mas de esto:VVVVV
             })
         .catch(function(error) {
-            console.log({name: "login", err: error});
+            console.log({name: "logout", err: error});
             
         });
           
-    }
+    },
 }
 
 
@@ -178,6 +202,24 @@ const getters = {
     },
     getUser(state){
         return state.users
+    },
+
+    
+    getAllmyMeets(state){
+        let myPosts =[];
+        state.users.registeredMeetups.forEach(
+            (el)=>{
+                db.collection('posters').doc(el).get()
+                .then(
+                    thin =>{
+                        myPosts.push(thin.data())
+                    }
+                )
+                .catch(err =>{
+                    console.log(err);
+                })
+        })
+        return myPosts
     }
 }
 

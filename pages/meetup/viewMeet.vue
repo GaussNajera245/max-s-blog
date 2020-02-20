@@ -27,7 +27,7 @@
            </template>
 
            <template  v-for = "(m,i) in meetupsCards"   >
-            <v-flex xs12 sm12 md6 lg6 :key="m.id"  v-if= "i % 2 !== 0"> 
+            <v-flex xs12 sm12 md6 lg6 :key="i"  v-if= "i % 2 !== 0"> 
               <v-img :src="m.imageUrl">
               <v-card-title primary-title>
                 <div>
@@ -70,12 +70,11 @@ export default {
         this.once = 1;
         this.$store.dispatch('fetchAllpost');
       }
-      console.log(this.$store.state.loadedMeetup)
       return this.$store.state.loadedMeetup
     }
   },
   filters: {
-    slice: function (value) {
+    slice: value =>{
       return value.slice(0,20)
     }
   },

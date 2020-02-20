@@ -15,7 +15,7 @@
           <v-list-item-content>{{item.title}}</v-list-item-content>
         </v-list-item>
 
-        <v-list-item v-if="true" @click="logOut" >
+        <v-list-item v-if= "this.isUserAuth" @click= "logOut" >
             <v-icon left >home</v-icon>
             <v-list-item-content>Log Out</v-list-item-content>
         </v-list-item>
@@ -44,6 +44,7 @@
       </v-btn>
       </template> 
 
+      <template  v-if="this.isUserAuth">
       <v-btn  
           text   
           class="hidden-xs-only  hidden-sm-only " 
@@ -52,6 +53,7 @@
         <v-icon left>home</v-icon> 
         Log Out
       </v-btn>    
+      </template>
     </v-app-bar>
    
     <v-content style="background-color: #981914;">

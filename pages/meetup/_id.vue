@@ -26,7 +26,7 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn>Go Back:</v-btn>
+                    <v-btn @click="goBack">Go Back:</v-btn>
                 </v-card-actions>
 
 
@@ -40,6 +40,11 @@ export default {
     computed:{
         meet () {
             return this.$store.getters.loadedMeet(this.$route.params.id)
+        }
+    },
+    methods:{
+        goBack(){
+            window.history.go(-1);
         }
     },
     filters: {

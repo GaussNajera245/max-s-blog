@@ -112,6 +112,7 @@ export default {
 
         this.$store.dispatch('createMeetup', pass) 
         this.reset()
+        this.$router.push('/meetup/viewMeet')
       }
     },
     computed:{
