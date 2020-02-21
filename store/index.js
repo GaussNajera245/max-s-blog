@@ -142,7 +142,9 @@ const actions={
 
                 commit('changeMail', payload.mail);
         })
-        .catch()
+        .catch(
+            err=>{      alert(err)}
+        )
     },
 
     logOut({commit, state}){
