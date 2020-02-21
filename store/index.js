@@ -29,7 +29,8 @@ const state = () => {
 
 const mutations = {
     createMeetup(state, payload){
-        state.loadedMeetup.push(payload)
+        state.loadedMeetup.push(payload);
+        state.users.registeredMeetups.push(payload.id)
     },
     fetchAllpost(state, payload){
         state.loadedMeetup = payload
@@ -39,9 +40,7 @@ const mutations = {
         state.users.registeredMeetups = payload.registeredMeetups;
         state.users.name = payload.name;
     },
-    addMeet(state, payload){
-        state.users.registeredMeetups.push(payload)
-    },
+
     changeMail(state, payload){
         state.mail = payload
     }
@@ -60,9 +59,6 @@ const actions={
 
         db.collection('posters').add(otis)
             .then((data) => {
-
-                commit('addMeet', data.id)
-                
                 commit('createMeetup', { ...otis, id: data.id})
             })
             .catch((err) => {
@@ -73,7 +69,7 @@ const actions={
              {
                 name: state.users.name,
                 mail: state.mail,
-                resgisteredPost: state.users.registeredMeetups
+                registeredPost: state.users.registeredMeetups
             })    
     },
 
@@ -146,33 +142,42 @@ const actions={
         .catch()
     },
 
-    logOut({commit}){
-        firebase.auth().signOut()
-        .then(
-            ()=>{
-                commit('currentUser', {
-                    id: null,
-                    registeredMeetups: null,
-                    name: null
+    logOut({commit, state}){
+
+
+        db.collection('users').doc(state.users.id).set({
+               name: state.users.name,
+               mail: state.mail,
+               registeredPost: state.users.registeredMeetups
+           })    
+
+        .then(()=>{
+            firebase.auth().signOut()
+            .then(
+                ()=>{
+                    commit('currentUser', {
+                        id: null,
+                        registeredMeetups: null,
+                        name: null
+                    })
+                    // .catch((err) => {
+                    //     console.log({newUserAtStore:err});
+                    // })
+                    this.$router.push('/user/signin')
+                    // let auth2 = gapi.auth2.getAuthInstance();
+                    // auth2.signOut().then(function () {
+                    // console.log('User signed out.');
+                    // });
+
+                    // console.log("logge ou ??")
+
+                    //// aprender mas de esto:VVVVV
                 })
-                // .catch((err) => {
-                //     console.log({newUserAtStore:err});
-                // })
-                this.$router.push('/user/signin')
-                // let auth2 = gapi.auth2.getAuthInstance();
-                // auth2.signOut().then(function () {
-                // console.log('User signed out.');
-                // });
-
-                // console.log("logge ou ??")
-
-                //// aprender mas de esto:VVVVV
-            })
+        })
         .catch(function(error) {
             console.log({name: "logout", err: error});
             
         });
-          
     },
 }
 
