@@ -64,13 +64,6 @@ const actions={
             .catch((err) => {
                 console.log({createMe:err});
             })
-
-         db.collection('users').doc(state.users.id).set(
-             {
-                name: state.users.name,
-                mail: state.mail,
-                registeredPost: state.users.registeredMeetups
-            })    
     },
 
     fetchAllpost({commit}){
@@ -117,6 +110,17 @@ const actions={
           });
     },
 
+    update({state}){
+        
+        db.collection('users').doc(state.users.id).set(
+            {
+               name: state.users.name,
+               mail: state.mail,
+               registeredPost: state.users.registeredMeetups
+           }) 
+
+    },
+
     logIn({commit}, payload){
         firebase.auth().signInWithEmailAndPassword( payload.mail, payload.password )
         .then(
@@ -130,11 +134,10 @@ const actions={
                         registeredMeetups: sst.data().registeredPost,
                         name: sst.data().name
                     }
-                    console.log(ship)
                     commit('currentUser', ship)
                   })
                   .catch(err => {
-                    console.log('Error getting documents', err);
+                    alert("Either Password or Mail is wrong, please try again");
                   });
 
                 commit('changeMail', payload.mail);
@@ -217,7 +220,7 @@ const getters = {
                 db.collection('posters').doc(el).get()
                 .then(
                     thin =>{
-                        myPosts.push(thin.data())
+                        myPosts.push({ ...thin.data(), id: thin.id})
                     }
                 )
                 .catch(err =>{

@@ -69,6 +69,7 @@ export default {
       if(this.once === 0){
         this.once = 1;
         this.$store.dispatch('fetchAllpost');
+        this.$store.dispatch('update');
       }
       return this.$store.state.loadedMeetup
     }

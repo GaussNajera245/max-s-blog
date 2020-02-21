@@ -4,7 +4,7 @@
       href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons"
       rel="stylesheet"
     >
-    <v-navigation-drawer temporary absolute v-model="drawer" > 
+    <v-navigation-drawer temporary absolute v-model="drawer"  style="position:fixed; top:0; left:0; overflow-y:scroll;" > 
       <v-list>
         <v-list-item>
         <img  src="/meetup1.png"  style="height: 60px;" >
