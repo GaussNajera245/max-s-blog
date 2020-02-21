@@ -6,15 +6,32 @@
         <v-spacer></v-spacer>
         <v-flex xs1 sm1 md1>
           <br>
-          <h1>Profile:
+          <h1>Profile
           </h1>
         </v-flex>
         <v-spacer></v-spacer>
       </v-layout>
     </v-flex>
+    <v-flex xs10 offset-xs1>
+          <hr>
+    </v-flex>
 
     <v-flex xs12 sm12 md12>
-        
+      <v-container>
+        <v-layout>
+          <v-spacer></v-spacer>
+
+          <v-flex xs4 sm3>
+            <h3> Name: {{name}}           </h3>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-flex xs4 sm3>
+            <h3> Mail: {{mail}}           </h3>
+          </v-flex>
+          <v-spacer></v-spacer>
+
+        </v-layout>
+      </v-container>
     </v-flex>
 
 
@@ -86,6 +103,12 @@ export default {
   computed:{
     meetupsCards (){
       return this.$store.getters.getAllmyMeets
+    },
+    mail(){
+      return this.$store.state.mail
+    },
+    name(){
+      return this.$store.state.users.name
     }
   },
   filters: {

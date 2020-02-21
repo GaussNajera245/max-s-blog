@@ -4,9 +4,11 @@
     <v-layout>
       <v-flex xs12 sm8 offset-sm2>
         <v-layout>
-          <v-flex offset-xs5 >
-        <h2 style="font-size:2em" >SIGN IN: </h2>
+          <v-spacer></v-spacer>
+          <v-flex xs2>
+        <h2 style="font-size:2em; " >SIGN IN: </h2>
           </v-flex>
+          <v-spacer></v-spacer>
         </v-layout>
         <v-card>
           <v-card-text>
